@@ -1,8 +1,7 @@
-BIOS-611 PROJECT - Fitness Tracker Data
-===============
+# BIOS-611 PROJECT - Fitness Tracker Data
 
-Introduction
-------------
+## Introduction
+
 
 I have chosen a FitBit Fitness tracker data set for my project. I am providing the link for the dataset on Kaggle for your reference - https://www.kaggle.com/datasets/arashnic/fitbit
 
