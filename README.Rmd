@@ -1,4 +1,8 @@
-# BIOS-611 PROJECT
+BIOS-611 PROJECT - Fitness Tracker Data
+===============
+
+Introduction
+------------
 
 I have chosen a FitBit Fitness tracker data set for my project. I am providing the link for the dataset on Kaggle for your reference - https://www.kaggle.com/datasets/arashnic/fitbit
 
@@ -11,3 +15,43 @@ There is a multi-million-dollar industry revolving around using smart wearables 
 Looking at the raw data, I believe I would be choosing certain health metrics out of all the recordings including possible questions which I could answer with the help of the data, and try performing data cleaning, analyzing to find some trends and conclusions along the way.  
 
 As a beginner in data science, this dataset would be ideal for me as there is previous case study work on this data which are existing and easily accessible. Despite the study group being small, the survey being 6yrs old and the dataset having the possibility of containing bias, I choose this data as the previous work could be of great aid to me by serving as a prototype while doing this project. Likewise, I am hoping and would also like to put the data science tools I am learning and learned during the class this semester to good use while doing this project.
+
+Using this Repository
+---------------------
+This repository is best used via Docker although you may be able to consult the Dockerfile to understand what requirements are appropriate to run the code. Through docker, you will create a separate environment, or a virtual computer, that contains all the resources needed to view and interact with this project without putting a burden on your own personal computer.
+
+First open a terminal and build the docker container using the code:
+```
+docker build . -t bios-611-project
+```
+
+And then start an RStudio instance in your web browser by typing in the terminal:
+
+```
+docker run -v $(pwd):/home/rstudio/project -p 8787:8787 -e PASSWORD=<some-password>
+```
+
+Once the Rstudio is running connect to it by visiting
+https://localhost:8787 in your browser. 
+
+Login to R studio with:
+  username:rstudio
+  password:<some-password>
+
+
+In the R console install the needed packages:
+
+```{R}
+library(tidyverse)
+library(ggplot2)
+```
+
+To build the final report, visit the terminal in RStudio and type
+
+```
+make writeup.pdf
+```
+
+
+
+
