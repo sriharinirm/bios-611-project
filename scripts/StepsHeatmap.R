@@ -15,7 +15,7 @@ avg_hourly_steps_as_per_time_of_day <- hourly_steps %>%
 group_by(DayOfWeek, TimeOfDay) %>% 
 summarise(AvgSteps = mean(StepTotal))
 
-ggplot(avg_hourly_steps_as_per_time_of_day, aes(DayOfWeek, TimeOfDay, fill = AvgSteps)) + 
+StepsHeatmap <- ggplot(avg_hourly_steps_as_per_time_of_day, aes(DayOfWeek, TimeOfDay, fill = AvgSteps)) + 
     geom_tile(color = "black") +
     scale_fill_gradient(low = "pink", high = "red")
 
