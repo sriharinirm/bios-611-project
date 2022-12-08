@@ -5,5 +5,15 @@ author: "Sriharini Radhakrishnan Madanraj"
 output: pdf_document
 ---
 
-![TotalStepsvsSedentaryMinutes](./figures/TotalStepsvsSedentaryMinutesy.png)
+![CorrelationMatrix](./figures/CorrelationMatrix.png)
+
+![CorrelationFigures](./figures/CorrelationFigure1.png)
+
+![CorrelationFigures](./figures/CorrelationFigure1.png)
+
+![StepsHeatmap](./figures/StepsHeatmap.png)
+
+![SleepHeatmap](./figures/SleepHeatmap.png)
+
+
 
