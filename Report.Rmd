@@ -1,6 +1,6 @@
 
 ---
-title: "writeup"
+title: "Report"
 author: "Sriharini Radhakrishnan Madanraj"
 output: pdf_document
 ---
