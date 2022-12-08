@@ -32,3 +32,4 @@ correlation_data <- select(daily_activity_and_sleep,Calories, TotalSteps:TimeTak
 
 cor(correlation_data)
 CorrelationMatrix <- corrplot(cor(correlation_data))
+ggsave("CorrelationMatrix")
