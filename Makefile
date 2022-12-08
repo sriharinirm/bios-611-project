@@ -15,19 +15,19 @@ clean:
 	mkdir -p derived_data
 	touch .created-dirs
   
-figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv sleepDay_merged.csv 
+figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv 
 	Rscript script/CorrelationMatrix.R
 	
-figures/CorrelationFigure1.png: source_data/dailyActivity_merged.csv sleepDay_merged.csv CorrelationMatrix.R
+figures/CorrelationFigure1.png: derived_data/correlation_data.csv CorrelationMatrix.R
 	Rscript script/CorrelationFigures.R
 	
-figures/CorrelationFigure2.png: source_data/dailyActivity_merged.csv sleepDay_merged.csv CorrelationMatrix.R
+figures/CorrelationFigure2.png: derived_data/correlation_data.csv CorrelationMatrix.R
 	Rscript script/CorrelationFigures.R
 
-figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv sleepDay_merged.csv CorrelationFigures.R
+figures/CorrelationMatrix.png: source_data/hourlySteps_merged.csv CorrelationFigures.R
 	Rscript script/StepsHeatmap.R
 	
-figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv sleepDay_merged.csv StepsHeatmap.R
+figures/CorrelationMatrix.png: source_data/minuteSleep_merged.csv StepsHeatmap.R
 	Rscript script/SleepHeatmap.R
 	
 # Write Report
