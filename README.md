@@ -42,13 +42,14 @@ In the R console install the needed packages:
 
 ```{R}
 library(tidyverse)
-library(ggplot2)
+library(lubridate)
+library(corrplot)
 ```
 
 To build the final report, visit the terminal in RStudio and type
 
 ```
-make writeup.pdf
+make Report.pdf
 ```
 
 
