@@ -1,3 +1,7 @@
+library(tidyverse)
+library(lubridate)
+library(corrplot)
+
 hourly_steps <- read.csv("hourlySteps_merged.csv")
 
 head(hourly_steps)
