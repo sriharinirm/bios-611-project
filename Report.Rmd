@@ -7,9 +7,11 @@ output: pdf_document
 
 ### **Analysis of User Activity and Sleep data recorded by Bellabeat fitness Tracker.**
 
-Introduction
+### Introduction
 
 Bellabeat a high-tech manufacturer of health-focused products for women. It's a successful small company, aiming to leaverage it's strngths to become a larger player in the global smart device market. The focus of this Report is to use the data collected from their smart device to gain insight into how consumers are using their smart devices. This analysis can be used to gain more information on Consumer Usage and Device Performance based on the Activity and Sleep related data.
+
+### Data Analysis
 
 The dailyAcivity_merged.csv is used for Activity data as it contains the most comprehensive data including the calories, intensity, distance, and steps recorded everyday and is used in conjunction with Sleep data from sleepDay_merged.csv to analyse the correlation between them.
 
@@ -53,13 +55,20 @@ To stay true to the initial objective of this analysis The next part also dealt 
 
 After establishing there is no significant correlation between them at least in this dataset, as a final part of this analysis, the Activity and Sleep was explored in a Time-Series keeping Days of the Week and Hours of the day as the key factors. First, hourlySteps_merged.csv was read in as hourly_steps, and checked for the viability of the variables for analysis using head function. The date variable was made consistent and another variable, days of the week was added to the corresponding date Then visualized, I as a heat map using ggplot geom_tile. Additionally, a bar chart was mode to show how the average steps differ over the week.
 
-![StepsHeatmap](./figures/StepsHeatmap.png)
+![StepsAnalysis](./figures/StepsHeatmap.png)
+
+![StepsAnalysis](./figures/AverageStepsPlot.png)
 
 The steps data analysis shows that the average steps is greater on Saturdays, and lower on Sundays when compared with the data recorded monday through friday. There is a sharp rise from Sunday to Monday and from Friday to Saturday. Although these data is not conculsive, the general human Psychology associated with workdays and holidays is reflected in this plot.
 
 For sleep data, the previous steps were adapted to analyse them in similar manner.
 
-![SleepHeatmap](./figures/SleepHeatmap.png)
+![SleepAnalysis](./figures/SleepHeatmap.png)
+
+![SleepAnalysis](./figures/AverageSleepPlot.png)
 
 It was noted that the sleep data contained some null fields and hypothesised to be due to the wearer removing the device at that time or the device stopping to recording because of low-battery or other technical issues.There were also several day time sleep record indicating that the device did not record the sleep pattern accurately due to the device not worn and set to assume that the user is sleeping or alternatively, possible issues with timezome. Hence, the sleep data quality is identified to be unreliable to various reasons mentioaned above.
 
+### Conclusion
+
+The devices's performance can be improved by collecting and analyzing more User data in future. In this particular dataset, the variables were often inconclusive and didnot aid in painting the whole picture. These type of data can be of great use to the company (in R&D and Marketing) as well to the Users(better habit tracking) and serve as a major game-changer.
