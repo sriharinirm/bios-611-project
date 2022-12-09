@@ -18,7 +18,7 @@ clean:
 	touch .created-dirs
 
 # Data Analysis  
-source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv: .created-dirs\
+source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv: .created-dirs
 	Rscript script/CorrelationMatrix.R
 	
 figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv 
