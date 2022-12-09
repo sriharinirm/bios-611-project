@@ -19,12 +19,3 @@ StepsHeatmap <- ggplot(avg_hourly_steps_as_per_time_of_day, aes(DayOfWeek, TimeO
     geom_tile(color = "black") +
     scale_fill_gradient(low = "pink", high = "red")
 ggsave("StepsHeatmap")
-
-avg_hourly_steps_as_per_day_of_week <-avg_hourly_steps_as_per_time_of_day %>%
-group_by(DayOfWeek) %>%
-summarise(StepsPerDay = sum(AvgSteps))
-
-AverageStepsPlot <- ggplot(data = avg_hourly_steps_as_per_day_of_week, aes(x= DayOfWeek, y = StepsPerDay, fill = StepsPerDay)) + 
-    geom_bar(stat="identity") + 
-    scale_fill_gradient (low="pink", high= "red")
-ggsave("AverageStepsPlot")
