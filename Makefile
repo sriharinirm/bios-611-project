@@ -8,6 +8,8 @@ clean:
 	rm -f sleepDay_merged.csv
 	rm -f hourlySteps_merged.csv
 	rm -f minuteSleep_merged.csv
+	rm -f correlation_data.csv
+	
 	rm -f Report.pdf
 
 .created-dirs:
@@ -24,13 +26,19 @@ figures/CorrelationFigure1.png: derived_data/correlation_data.csv CorrelationMat
 figures/CorrelationFigure2.png: derived_data/correlation_data.csv CorrelationMatrix.R
 	Rscript script/CorrelationFigures.R
 
-figures/CorrelationMatrix.png: source_data/hourlySteps_merged.csv CorrelationFigures.R
-	Rscript script/StepsHeatmap.R
+figures/StepsHeatmap.png: source_data/hourlySteps_merged.csv CorrelationFigures.R
+	Rscript script/StepsAnalysis.R
+
+figures/AverageStepsPlot.png: derived_data/avg_hourly_steps_as_per_day_of_week.csv CorrelationFigures.R
+	Rscript script/StepsAnalysis.R
 	
-figures/CorrelationMatrix.png: source_data/minuteSleep_merged.csv StepsHeatmap.R
-	Rscript script/SleepHeatmap.R
+figures/SleepHeatmap.png: derived_data/avg_hourly_sleep_as_per_time_of_day.csv StepsAnalysis.R
+	Rscript script/SleepAnalysis.R
+
+figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv StepsAnalysis.R
+	Rscript script/SleepAnalysis.R
 	
 # Write Report
-writeup.pdf: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationMatrix.png figures/CorrelationMatrix.png
+writeup.pdf: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
 	R -e "rmarkdown::render(\"writeup.Rmd\", output_format=\"pdf_document\")"
 
