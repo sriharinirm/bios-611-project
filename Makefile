@@ -16,7 +16,8 @@ clean:
 	mkdir -p figures
 	mkdir -p derived_data
 	touch .created-dirs
-  
+
+# Data Analysis  
 figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv 
 	Rscript script/CorrelationMatrix.R
 	
