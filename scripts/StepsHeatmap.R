@@ -18,4 +18,5 @@ summarise(AvgSteps = mean(StepTotal))
 StepsHeatmap <- ggplot(avg_hourly_steps_as_per_time_of_day, aes(DayOfWeek, TimeOfDay, fill = AvgSteps)) + 
     geom_tile(color = "black") +
     scale_fill_gradient(low = "pink", high = "red")
-ggsave("StepsHeatmap")
+ggsave(filename = "figures/StepsHeatmap.png",
+       plot = StepsHeatmap)
