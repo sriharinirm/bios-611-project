@@ -4,8 +4,6 @@ library(corrplot)
 
 hourly_sleep <- read.csv("minuteSleep_merged.csv")
 
-head(hourly_sleep)
-
 hourly_sleep <- hourly_sleep %>% mutate(date = mdy_hms(date))
 
 hourly_sleep <- hourly_sleep %>% mutate(hourly_sleep, DayOfWeek=weekdays(date)) %>%
@@ -14,13 +12,9 @@ hourly_sleep <- hourly_sleep %>% mutate(hourly_sleep, DayOfWeek=weekdays(date)) 
 
 hourly_sleep <- mutate(hourly_sleep, DayOfWeek= factor(DayOfWeek, levels = c("Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")))
 
-head(hourly_sleep)
-
 avg_hourly_sleep_as_per_day_of_week <- hourly_sleep %>% 
 group_by(Id, dateonly, DayOfWeek, TimeOfDay) %>% 
 summarise(MinSleep = sum(value))
-
-avg_hourly_sleep_as_per_day_of_week
 
 avg_hourly_sleep_as_per_time_of_day <- avg_hourly_sleep_as_per_day_of_week %>% 
 group_by(DayOfWeek, TimeOfDay) %>% 
@@ -30,3 +24,12 @@ SleepHeatmap <- ggplot(avg_hourly_sleep_as_per_time_of_day, aes(DayOfWeek, TimeO
     geom_tile(color = "black") +
     scale_fill_gradient(low = "light yellow", high = "dark orange")
 ggsave("SleepHeatmap")
+
+avg_dayofweek_sleep <- daily_activity_and_sleep %>% 
+group_by(DayOfWeek) %>% 
+summarise_at(c(AvgDistance = "TotalDistance", AvgSleepMinutes = "TotalMinutesAsleep"), mean,na.rm = TRUE)
+
+AverageSleepPlot <- ggplot(data = avg_dayofweek_sleep, aes(x= DayOfWeek, y = AvgSleepMinutes, fill = AvgSleepMinutes)) + 
+    geom_bar(stat="identity") + 
+    scale_fill_gradient (low="orange", high= "brown")
+ggsave("AverageSleepPlot")
