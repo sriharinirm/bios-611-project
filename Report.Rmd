@@ -51,7 +51,7 @@ To stay true to the initial objective of this analysis The next part also dealt 
 
 ![CorrelationFigure1](./figures/CorrelationFigure1.png)
 
-![CorrelationFigure2](./figures/CorrelationFigure1.png)
+![CorrelationFigure2](./figures/CorrelationFigure2.png)
 
 After establishing there is no significant correlation between them at least in this dataset, as a final part of this analysis, the Activity and Sleep was explored in a Time-Series keeping Days of the Week and Hours of the day as the key factors. First, hourlySteps_merged.csv was read in as hourly_steps, and checked for the viability of the variables for analysis using head function. The date variable was made consistent and another variable, days of the week was added to the corresponding date Then visualized, I as a heat map using ggplot geom_tile. Additionally, a bar chart was mode to show how the average steps differ over the week.
 
