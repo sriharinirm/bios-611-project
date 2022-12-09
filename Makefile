@@ -9,7 +9,7 @@ clean:
 	rm -f hourlySteps_merged.csv
 	rm -f minuteSleep_merged.csv
 	rm -f correlation_data.csv
-	
+	avg_dayofweek_sleep.csv
 	rm -f Report.pdf
 
 .created-dirs:
@@ -40,5 +40,5 @@ figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv SleepHeatmap.
 	
 # Write Report
 writeup.pdf: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
-	R -e "rmarkdown::render(\"Report.Rmd\", output_format=\"pdf_document\")"
+	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"pdf_document\")"
 
