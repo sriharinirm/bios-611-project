@@ -24,12 +24,3 @@ SleepHeatmap <- ggplot(avg_hourly_sleep_as_per_time_of_day, aes(DayOfWeek, TimeO
     geom_tile(color = "black") +
     scale_fill_gradient(low = "light yellow", high = "dark orange")
 ggsave("SleepHeatmap")
-
-avg_dayofweek_sleep <- daily_activity_and_sleep %>% 
-group_by(DayOfWeek) %>% 
-summarise_at(c(AvgDistance = "TotalDistance", AvgSleepMinutes = "TotalMinutesAsleep"), mean,na.rm = TRUE)
-
-AverageSleepPlot <- ggplot(data = avg_dayofweek_sleep, aes(x= DayOfWeek, y = AvgSleepMinutes, fill = AvgSleepMinutes)) + 
-    geom_bar(stat="identity") + 
-    scale_fill_gradient (low="orange", high= "brown")
-ggsave("AverageSleepPlot")
