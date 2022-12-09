@@ -39,7 +39,10 @@ figures/SleepHeatmap.png: derived_data/avg_hourly_sleep_as_per_time_of_day.csv A
 figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv SleepHeatmap.R
 	Rscript script/AverageSleepPlot.R
 	
-# Write Report
+# Write Reports
 Report.pdf: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
 	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"pdf_document\")"
+
+Report.html: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
+	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"HTML_document\")"
 
