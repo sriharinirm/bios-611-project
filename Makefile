@@ -14,23 +14,28 @@ clean:
 	mkdir -p figures
 	mkdir -p derived_data
 	touch .created-dirs
+	
+	
 # Data Analysis  
-figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv 
+figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv script/CorrelationMatrix.R
 	Rscript script/CorrelationMatrix.R
 	
-figures/CorrelationFigure1.png: derived_data/correlation_data.csv CorrelationMatrix.R
+figures/CorrelationFigure1.png: derived_data/correlation_data.csv CorrelationMatrix.R script/CorrelationFigure1.R
 	Rscript script/CorrelationFigure1.R
 	
-figures/CorrelationFigure2.png: derived_data/correlation_data.csv CorrelationFigure1.R
+figures/CorrelationFigure2.png: derived_data/correlation_data.csv CorrelationFigure1.R script/CorrelationFigure2.R
 	Rscript script/CorrelationFigure2.R
-figures/StepsHeatmap.png: source_data/hourlySteps_merged.csv CorrelationFigure2.R
+	
+figures/StepsHeatmap.png: source_data/hourlySteps_merged.csv CorrelationFigure2.R script/StepsHeatmap.R
 	Rscript script/StepsHeatmap.R
-figures/AverageStepsPlot.png: derived_data/avg_hourly_steps_as_per_day_of_week.csv StepsHeatmap.R
+	
+figures/AverageStepsPlot.png: derived_data/avg_hourly_steps_as_per_day_of_week.csv StepsHeatmap.R script/AverageStepsPlot.R
 	Rscript script/AverageStepsPlot.R
 	
-figures/SleepHeatmap.png: derived_data/avg_hourly_sleep_as_per_time_of_day.csv AverageStepsPlot.R
+figures/SleepHeatmap.png: derived_data/avg_hourly_sleep_as_per_time_of_day.csv AverageStepsPlot.R script/SleepHeatmap.R
 	Rscript script/SleepHeatmap.R
-figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv SleepHeatmap.R
+	
+figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv SleepHeatmap.R script/AverageSleepPlot.R
 	Rscript script/AverageSleepPlot.R
 
 # Write Report
