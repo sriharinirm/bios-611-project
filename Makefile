@@ -36,3 +36,5 @@ figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv SleepHeatmap.
 # Write Report
 Report.pdf: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
 	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"pdf_document\")"
+Report.html: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
+	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"html_document\")"
