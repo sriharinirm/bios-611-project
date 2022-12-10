@@ -52,7 +52,7 @@ library(corrplot)
 To build the final report, visit the terminal in RStudio and type
 
 ```{R}
-make Report.pdf
+make Report.html
 ```
 
 
