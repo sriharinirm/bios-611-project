@@ -1,5 +1,4 @@
 .PHONY: clean
-
 clean:
 	rm -rf figures
 	rm -rf derived_data
@@ -11,60 +10,29 @@ clean:
 	rm -f correlation_data.csv
 	avg_dayofweek_sleep.csv
 	rm -f Report.pdf
-
 .created-dirs:
 	mkdir -p figures
 	mkdir -p derived_data
 	touch .created-dirs
-
-script/CorrelationMatrix.R: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv script/CorrelationMatrix.R
-	script/CorrelationMatrix.R
-
-derived_data/correlation_data.csv: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv CorrelationMatrix.R
-	Rscript script/CorrelationMatrix.R
-
-derived_data/daily_activity_and_sleep.csv: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv CorrelationMatrix.R
-	Rscript script/CorrelationMatrix.R
-
-derived_data/avg_hourly_sleep_as_per_time_of_day.csv: .created-dirs source_data/hourlySteps_merged.csv AverageStepsPlot.R
-	Rscript script/AverageStepsPlot.R
-	
-derived_data/avg_hourly_steps_as_per_day_of_week.csv: .created-dirs derived_data/avg_hourly_sleep_as_per_time_of_day.csv CorrelationMatrix.R
-	Rscript script/CorrelationMatrix.R
-	
-derived_data/avg_hourly_sleep_as_per_day_of_week.csv: .created-dirs source_data/minuteSleep_merged.csv.csv SleepHeatmap.R
-	Rscript script/SleepHeatmap.R
-	
-derived_data/avg_dayofweek_sleep.csv: .created-dirs derived_data/daily_activity_and_sleep.csv AverageSleepPlot.R
-	Rscript script/AverageSleepPlot.R
-	
 # Data Analysis  
-
-figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv script/CorrelationMatrix.R
+figures/CorrelationMatrix.png: source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv 
 	Rscript script/CorrelationMatrix.R
 	
-figures/CorrelationFigure1.png: derived_data/correlation_data.csv script/CorrelationMatrix.R script/CorrelationFigure1.R
+figures/CorrelationFigure1.png: derived_data/correlation_data.csv CorrelationMatrix.R
 	Rscript script/CorrelationFigure1.R
 	
-figures/CorrelationFigure2.png: derived_data/correlation_data.csv CorrelationFigure1.R script/CorrelationFigure2.R
+figures/CorrelationFigure2.png: derived_data/correlation_data.csv CorrelationFigure1.R
 	Rscript script/CorrelationFigure2.R
-
-figures/StepsHeatmap.png: source_data/hourlySteps_merged.csv script/CorrelationFigure2.R script/StepsHeatmap.R
+figures/StepsHeatmap.png: source_data/hourlySteps_merged.csv CorrelationFigure2.R
 	Rscript script/StepsHeatmap.R
-
-figures/AverageStepsPlot.png: derived_data/avg_hourly_steps_as_per_day_of_week.csv script/StepsHeatmap.R script/AverageStepsPlot.R
+figures/AverageStepsPlot.png: derived_data/avg_hourly_steps_as_per_day_of_week.csv StepsHeatmap.R
 	Rscript script/AverageStepsPlot.R
 	
-figures/SleepHeatmap.png: derived_data/avg_hourly_sleep_as_per_time_of_day.csv script/AverageStepsPlot.R script/SleepHeatmap.R
+figures/SleepHeatmap.png: derived_data/avg_hourly_sleep_as_per_time_of_day.csv AverageStepsPlot.R
 	Rscript script/SleepHeatmap.R
-
-figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv script/SleepHeatmap.R script/AverageSleepPlot.R
+figures/AverageSleepPlot.png: derived_data/avg_dayofweek_sleep.csv SleepHeatmap.R
 	Rscript script/AverageSleepPlot.R
-	
-# Write Reports
+
+# Write Report
 Report.pdf: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
 	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"pdf_document\")"
-
-Report.html: figures/CorrelationMatrix.png figures/CorrelationFigure1.png figures/CorrelationFigure2.png figures/StepsHeatmap.png figures/AverageStepsPlot.png figures/SleepHeatmap.png figures/AverageSleepPlot.png
-	Rscript -e "rmarkdown::render(\"Report.Rmd\", output_format=\"HTML_document\")"
-
