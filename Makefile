@@ -15,22 +15,22 @@ clean:
 	mkdir -p derived_data
 	touch .created-dirs
 
-derived_data/correlation_data.csv: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv CorrelationMatrix.R
+derived_data/correlation_data.csv: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv script/CorrelationMatrix.R
 	Rscript script/CorrelationMatrix.R
 
-derived_data/daily_activity_and_sleep.csv: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv CorrelationMatrix.R
+derived_data/daily_activity_and_sleep.csv: .created-dirs source_data/dailyActivity_merged.csv source_data/sleepDay_merged.csv script/CorrelationMatrix.R
 	Rscript script/CorrelationMatrix.R
 
-derived_data/avg_hourly_sleep_as_per_time_of_day.csv: .created-dirs source_data/hourlySteps_merged.csv AverageStepsPlot.R
+derived_data/avg_hourly_sleep_as_per_time_of_day.csv: .created-dirs source_data/hourlySteps_merged.csv script/AverageStepsPlot.R
 	Rscript script/AverageStepsPlot.R
 
-derived_data/avg_hourly_steps_as_per_day_of_week.csv: .created-dirs derived_data/avg_hourly_sleep_as_per_time_of_day.csv CorrelationMatrix.R
+derived_data/avg_hourly_steps_as_per_day_of_week.csv: .created-dirs derived_data/avg_hourly_sleep_as_per_time_of_day.csv script/CorrelationMatrix.R
 	Rscript script/CorrelationMatrix.R
 
-derived_data/avg_hourly_sleep_as_per_day_of_week.csv: .created-dirs source_data/minuteSleep_merged.csv.csv SleepHeatmap.R
+derived_data/avg_hourly_sleep_as_per_day_of_week.csv: .created-dirs source_data/minuteSleep_merged.csv.csv script/SleepHeatmap.R
 	Rscript script/SleepHeatmap.R
 
-derived_data/avg_dayofweek_sleep.csv: .created-dirs derived_data/daily_activity_and_sleep.csv AverageSleepPlot.R
+derived_data/avg_dayofweek_sleep.csv: .created-dirs derived_data/daily_activity_and_sleep.csv script/AverageSleepPlot.R
 	Rscript script/AverageSleepPlot.R
 
 # Data Analysis  
