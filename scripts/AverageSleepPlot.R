@@ -11,5 +11,8 @@ summarise_at(c(AvgDistance = "TotalDistance", AvgSleepMinutes = "TotalMinutesAsl
 AverageSleepPlot <- ggplot(data = avg_dayofweek_sleep, aes(x= DayOfWeek, y = AvgSleepMinutes, fill = AvgSleepMinutes)) + 
     geom_bar(stat="identity") + 
     scale_fill_gradient (low="orange", high= "brown")
+
 ggsave(filename = "figures/AverageSleepPlot.png",
        plot = AverageSleepPlot)
+
+write_csv(avg_dayofweek_sleep, "derived_data/avg_dayofweek_sleep.csv")
