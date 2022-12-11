@@ -16,7 +16,6 @@ daily_sleep <- transform(daily_sleep, TimeTakenToSleep = TotalTimeInBed - TotalM
 daily_activity_and_sleep <- merge(x = daily_activity, y = daily_sleep, by=c("Id","Date"), all.x = TRUE)
 
 daily_activity_and_sleep <- transform(daily_activity_and_sleep, DayOfWeek=weekdays(Date))
-head(daily_activity_and_sleep)
 
 correlation_data <- select(daily_activity_and_sleep,Calories, TotalSteps:TimeTakenToSleep, -TrackerDistance) %>% filter(!is.na(TimeTakenToSleep))
 
@@ -24,3 +23,6 @@ cor(correlation_data)
 CorrelationMatrix <- corrplot(cor(correlation_data))
 ggsave(filename = "figures/CorrelationMatrix.png",
        plot = CorrelationMatrix)
+
+write_csv(daily_activity_and_sleep, "derived_data/daily_activity_and_sleep")
+write_csv(correlation_data, "derived_data/correlation_data.csv")
