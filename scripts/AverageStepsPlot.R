@@ -23,7 +23,6 @@ AverageStepsPlot <- ggplot(data = avg_hourly_steps_as_per_day_of_week, aes(x= Da
     geom_bar(stat="identity") + 
     scale_fill_gradient (low="pink", high= "red")
 
-write_csv(avg_hourly_steps_as_per_time_of_day, "derived_data/avg_hourly_steps_as_per_time_of_day")
 write_csv(avg_hourly_steps_as_per_day_of_week, "derived_data/avg_hourly_steps_as_per_day_of_week")
 
 ggsave(filename = "figures/AverageStepsPlot.png",
