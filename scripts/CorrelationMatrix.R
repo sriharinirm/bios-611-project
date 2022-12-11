@@ -24,5 +24,5 @@ CorrelationMatrix <- corrplot(cor(correlation_data))
 ggsave(filename = "figures/CorrelationMatrix.png",
        plot = CorrelationMatrix)
 
-write_csv(daily_activity_and_sleep, "derived_data/daily_activity_and_sleep")
+write_csv(daily_activity_and_sleep, "derived_data/daily_activity_and_sleep.csv")
 write_csv(correlation_data, "derived_data/correlation_data.csv")
