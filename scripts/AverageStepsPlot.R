@@ -22,5 +22,9 @@ summarise(StepsPerDay = sum(AvgSteps))
 AverageStepsPlot <- ggplot(data = avg_hourly_steps_as_per_day_of_week, aes(x= DayOfWeek, y = StepsPerDay, fill = StepsPerDay)) + 
     geom_bar(stat="identity") + 
     scale_fill_gradient (low="pink", high= "red")
+
+write_csv(avg_hourly_sleep_as_per_time_of_day, "derived_data/avg_hourly_sleep_as_per_time_of_day.csv")
+write_csv(avg_hourly_steps_as_per_day_of_week, "derived_data/avg_hourly_steps_as_per_day_of_week")
+
 ggsave(filename = "figures/AverageStepsPlot.png",
        plot = AverageStepsPlot)
