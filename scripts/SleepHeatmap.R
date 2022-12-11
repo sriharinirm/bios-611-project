@@ -23,5 +23,9 @@ summarise(AvgSleep = mean(MinSleep))
 SleepHeatmap <- ggplot(avg_hourly_sleep_as_per_time_of_day, aes(DayOfWeek, TimeOfDay, fill = AvgSleep)) + 
     geom_tile(color = "black") +
     scale_fill_gradient(low = "light yellow", high = "dark orange")
+
 ggsave(filename = "figures/SleepHeatmap.png",
        plot = SleepHeatmap)
+
+write_csv(avg_hourly_sleep_as_per_day_of_week, "derived_data/avg_hourly_sleep_as_per_day_of_week.csv")
+write_csv(avg_hourly_sleep_as_per_time_of_day, "derived_data/avg_hourly_sleep_as_per_time_of_day.csv")
