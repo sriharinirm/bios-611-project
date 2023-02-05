@@ -1,0 +1,153 @@
+# Report
+
+### **Analysis of User Activity and Sleep data recorded by Bellabeat fitness Tracker.**
+
+First, we need to load the libraries needed for analysis. I am using Tidyverse for data analysis and ggplot2 for making visualizations. Additionally, I am also using corrplot for making correlation matrix later in the analysis.
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(corrplot)
+```
+
+After examining all the csv files, I have decided to use dailyAcivity_merged.csv as it contains the complete data on activity including the calories, intensity, distance, and steps recorded everyday. And I would also like to join the sleepDay_merged.csv with the dailyAcivity_merged.csv as we go along to analyse the correlation between them.
+
+```{r}
+daily_activity <- read.csv("dailyActivity_merged.csv")
+daily_sleep <- read.csv("sleepDay_merged.csv")
+```
+
+I am now checking the columns, datatypes, and first few rows using the head function to determine the feasibility of joining the two tables.
+
+We could see that the format, data type and the name of the date column is inconsistent in both tables. We are making those changes and checking the transformed tables as our next step.
+
+```{r}
+daily_activity$ActivityDate <- as.Date.character(daily_activity$ActivityDate, format="%m/%d/%Y")
+daily_sleep$SleepDay <- as.Date.character(daily_sleep$SleepDay, format="%m/%d/%Y")
+
+daily_sleep <- rename(daily_sleep, Date = SleepDay)
+daily_activity <- rename(daily_activity, Date = ActivityDate)
+```
+
+Next, we are adding a new column which consists of the calculated minutes taken by the user to fall sleep. Once again, we check the tables and make sure it is ready for joining.
+
+```{r}
+daily_sleep <- transform(daily_sleep, TimeTakenToSleep = TotalTimeInBed - TotalMinutesAsleep)
+```
+
+The tables are ready to be merged. You could now see in the next step the merged table called daily_activity_and_sleep which contains the sleep and activity table joined using Id and Date as reference columns.
+
+```{r}
+daily_activity_and_sleep <- merge(x = daily_activity, y = daily_sleep, by=c("Id","Date"), all.x = TRUE)
+```
+
+I am now adding the column "DayOfWeek" which assigns the respective day of the week to the dates in the dataset.
+
+```{r}
+
+daily_activity_and_sleep <- transform(daily_activity_and_sleep, DayOfWeek=weekdays(Date))
+```
+
+Next-up, I am creating a table that we could use for correlation. I did this because in order to do correlation the table must contain only numerical values. Additionally, I dropped the observations with "NA" on sleep data as it affected the correlation coefficient.
+
+```{r}
+correlation_data <- select(daily_activity_and_sleep,Calories, TotalSteps:TimeTakenToSleep, -TrackerDistance) %>% filter(!is.na(TimeTakenToSleep))
+```
+
+Here is the correlation matrix that includes the sleep variables that we joined earlier.
+
+```{r}
+cor(correlation_data)
+CorrelationMatrix <- corrplot(cor(correlation_data))
+```
+
+Based on the Correlation Plot, we can see that
+
+-   TotalSteps and TotalDistance have very high correlation, so they are basically the same variable.
+
+-   Other significant correlations that can be observed with TotalSteps/TotalDistance are VeryActiveDistance, VeryActiveMinutes, ModeratelyActiveDistance and FairlyActiveMinutes.
+
+-   Point to be noted is even LightActiveDistance has a decently high positive correlation with Calories burned.
+
+-   Whereas, SedentaryMinutes has almost no positive or small negative effect on Calories burned.
+
+-   In addition, all the sleep variables has low negative correlation on calories burned.
+
+If we are going to consider Calories Burned as being "Health-Conscious". I think these observations signify the importance of even minimal physical activity.
+
+I started this analysis in hopes drawing some conclusions on Activity and Sleep. So, next I am plotting coorelation between sleep and activity. I am also plotting the TotalSteps and TotalDistance just to show how a strongly correlated variables look. So that, we draw conclusions about the coorelation between variables Calories, TotalMinutesAsleep, TotalSteps. I did not find any strong correlation between them atleast in this particular dataset.
+
+```{r}
+plot(select(correlation_data, Calories, TotalMinutesAsleep, TotalSteps))
+
+plot(select(correlation_data, TotalDistance, TotalSteps))
+```
+
+After establishing there is no significant correlation between them at least in this dataset, as a final part of this analysis, I wanted to explore Activity and Sleep in a Time-Series keeping Days of the Week and Hours of the day as the key factors. First, I read the file hourlySteps_merged.csv as hourly_steps, checked for the viability of the variables for analysis using head function. And decided to make the date into a consistent format and add days of the week to the corresponding date and finally, checked for the transformations made. For the visualization, I decided to go with a heat map using ggplot geom_tile.
+
+```{r}
+hourly_steps <- read.csv("hourlySteps_merged.csv")
+
+hourly_steps <- hourly_steps %>% mutate(ActivityHour = mdy_hms(ActivityHour))
+
+hourly_steps <- hourly_steps %>% mutate(hourly_steps, DayOfWeek=weekdays(ActivityHour)) %>%
+    mutate(hourly_steps,TimeOfDay= format(ActivityHour, format = "%H"))
+
+hourly_steps <- mutate(hourly_steps, DayOfWeek= factor(DayOfWeek, levels = c("Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")))
+
+avg_hourly_steps_as_per_time_of_day <- hourly_steps %>% 
+group_by(DayOfWeek, TimeOfDay) %>% 
+summarise(AvgSteps = mean(StepTotal))
+
+ggplot(avg_hourly_steps_as_per_time_of_day, aes(DayOfWeek, TimeOfDay, fill = AvgSteps)) + 
+    geom_tile(color = "black") +
+    scale_fill_gradient(low = "pink", high = "red")
+
+avg_hourly_steps_as_per_day_of_week <-avg_hourly_steps_as_per_time_of_day %>%
+group_by(DayOfWeek) %>%
+summarise(StepsPerDay = sum(AvgSteps))
+
+ggplot(data = avg_hourly_steps_as_per_day_of_week, aes(x= DayOfWeek, y = StepsPerDay, fill = StepsPerDay)) + 
+geom_bar(stat="identity") + 
+scale_fill_gradient (low="pink", high= "red")
+```
+
+I dd very similar steps as follows with the hourly sleep data:
+
+```{r}
+hourly_sleep <- read.csv("minuteSleep_merged.csv")
+
+hourly_sleep <- hourly_sleep %>% mutate(date = mdy_hms(date))
+
+hourly_sleep <- hourly_sleep %>% mutate(hourly_sleep, DayOfWeek=weekdays(date)) %>%
+    mutate(hourly_sleep,TimeOfDay = format(date, format = "%H")) %>%
+    mutate(hourly_sleep,dateonly = format(date, format = "%m/%d/%y"))
+
+hourly_sleep <- mutate(hourly_sleep, DayOfWeek= factor(DayOfWeek, levels = c("Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")))
+
+avg_dayofweek_sleep <- daily_activity_and_sleep %>% 
+group_by(DayOfWeek) %>% 
+summarise_at(c(AvgDistance = "TotalDistance", AvgSleepMinutes = "TotalMinutesAsleep"), mean,na.rm = TRUE)
+
+ggplot(data = avg_dayofweek_sleep, aes(x= DayOfWeek, y = AvgSleepMinutes, fill = AvgSleepMinutes)) + 
+geom_bar(stat="identity") + 
+scale_fill_gradient (low="orange", high= "brown")
+
+avg_hourly_sleep_as_per_day_of_week <- hourly_sleep %>% 
+group_by(Id, dateonly, DayOfWeek, TimeOfDay) %>% 
+summarise(MinSleep = sum(value))
+
+avg_hourly_sleep_as_per_time_of_day <- avg_hourly_sleep_as_per_day_of_week %>% 
+group_by(DayOfWeek, TimeOfDay) %>% 
+summarise(AvgSleep = mean(MinSleep))
+
+ggplot(avg_hourly_sleep_as_per_time_of_day, aes(DayOfWeek, TimeOfDay, fill = AvgSleep)) + 
+    geom_tile(color = "black") +
+    scale_fill_gradient(low = "light yellow", high = "dark orange")
+
+```
+
+```{r}
+write.csv(avg_hourly_steps_as_per_day_of_week,"avg_hourly_steps_as_per_day_of_week", row.names=FALSE)
+
+```
